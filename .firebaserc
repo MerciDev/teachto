@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "cenec-app",
+    "cenec-app": "cenec-app"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

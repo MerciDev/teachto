@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "523775229517",
+    "firebase_url": "https://cenec-app-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "cenec-app",
+    "storage_bucket": "cenec-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523775229517:android:e34ac8a779679e583ca604",
+        "android_client_info": {
+          "package_name": "com.example.cenec_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523775229517-2oaiqrkmbcbupu1kffheaupgn4ghbig9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSOMW1ph5DBNGF4B8Cr18D44MtHUBEyEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523775229517-2oaiqrkmbcbupu1kffheaupgn4ghbig9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523775229517:android:62f171a503efda293ca604",
+        "android_client_info": {
+          "package_name": "com.vortex.cenec_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523775229517-mcr638869kk32l6vqrpjjcmm2n5qaroe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vortex.cenec_app",
+            "certificate_hash": "5a2943ac6a946b2b51e57a7064f6d989e0c5d0ff"
+          }
+        },
+        {
+          "client_id": "523775229517-2oaiqrkmbcbupu1kffheaupgn4ghbig9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSOMW1ph5DBNGF4B8Cr18D44MtHUBEyEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523775229517-2oaiqrkmbcbupu1kffheaupgn4ghbig9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523775229517:android:4ce64da1307b75ad3ca604",
+        "android_client_info": {
+          "package_name": "com.vtx.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523775229517-2oaiqrkmbcbupu1kffheaupgn4ghbig9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSOMW1ph5DBNGF4B8Cr18D44MtHUBEyEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523775229517-2oaiqrkmbcbupu1kffheaupgn4ghbig9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
