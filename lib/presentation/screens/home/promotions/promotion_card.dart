@@ -31,7 +31,6 @@ class PromotionCard extends StatelessWidget {
                       height: 120,
                       width: double.infinity,
                     ),
-
                     const SizedBox(height: 8),
                     // Título de la promoción
                     Padding(

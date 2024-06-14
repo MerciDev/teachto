@@ -1,5 +1,4 @@
 import 'package:cenec_app/presentation/screens/intro/intro.dart';
-import 'package:cenec_app/resources/functions/navigation.dart';
 import 'package:cenec_app/services/local_storage/local_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,16 +17,19 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(5.0),
         children: [
-          const ToggleButton(label: "Avisar tareas pendientes", property: "pendingNotify"),
-          const ToggleButton(label: "Avisar tareas sin entregar", property: "unsubmittedNotify"),
+          const ToggleButton(
+              label: "Avisar tareas pendientes", property: "pendingNotify"),
+          const ToggleButton(
+              label: "Avisar tareas sin entregar",
+              property: "unsubmittedNotify"),
           _buildSettingButton(
             context,
             'Cerrar sesión',
             onPressed: () {
               FirebaseAuth.instance.signOut();
               LocalStorage.prefs.setBool("signed", false);
-              navigateToSlide(context, Durations.medium2, const IntroPage(),
-                  const Offset(1.0, 0.0), const Offset(0.0, 0.0));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const IntroPage()));
             },
           ),
           // Agrega más botones aquí según sea necesario
@@ -65,7 +67,6 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class ToggleButton extends StatefulWidget {
@@ -84,7 +85,7 @@ class ToggleButtonState extends State<ToggleButton> {
   @override
   void initState() {
     super.initState();
-    _loadActiveState(); 
+    _loadActiveState();
   }
 
   void _loadActiveState() async {
@@ -100,7 +101,8 @@ class ToggleButtonState extends State<ToggleButton> {
       padding: const EdgeInsets.all(2.0),
       child: ElevatedButton(
         onPressed: () async {
-          LocalStorage.prefs.setBool(widget.property, !_isActive); // Guardar nuevo estado
+          LocalStorage.prefs
+              .setBool(widget.property, !_isActive); // Guardar nuevo estado
           setState(() {
             _isActive = !_isActive;
           });
@@ -118,8 +120,10 @@ class ToggleButtonState extends State<ToggleButton> {
             Expanded(
               child: Text(
                 widget.label,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.black),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(color: Colors.black),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -133,5 +137,3 @@ class ToggleButtonState extends State<ToggleButton> {
     );
   }
 }
-
-

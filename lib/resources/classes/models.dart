@@ -44,15 +44,14 @@ class Task {
   late bool isExam;
   late String subjectUid;
 
-  Task({
-    this.uid = "",
-    this.name = "Nombre Desconocido",
-    this.description = "Sin Descripción",
-    this.creationDate,
-    this.dueDate,
-    this.isExam = false,
-    this.subjectUid = ""
-  });
+  Task(
+      {this.uid = "",
+      this.name = "Nombre Desconocido",
+      this.description = "Sin Descripción",
+      this.creationDate,
+      this.dueDate,
+      this.isExam = false,
+      this.subjectUid = ""});
 
   static Task fromSnapshot(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -142,7 +141,8 @@ class Task {
           .get();
 
       if (userDataSnapshot.exists) {
-        Map<String, dynamic> userData = userDataSnapshot.data() as Map<String, dynamic>;
+        Map<String, dynamic> userData =
+            userDataSnapshot.data() as Map<String, dynamic>;
         if (userData.containsKey('status')) {
           status = userData['status'];
         }
@@ -176,5 +176,4 @@ class Task {
       }
     }
   }
-
 }

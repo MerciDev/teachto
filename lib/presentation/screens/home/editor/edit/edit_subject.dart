@@ -364,6 +364,7 @@ class SubjectDetailsState extends State<SubjectDetails> {
         .get();
 
     List<String> taskIds = tasksSnapshot.docs.map((doc) => doc.id).toList();
+    // ignore: use_build_context_synchronously
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => TaskDetails(

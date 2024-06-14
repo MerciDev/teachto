@@ -25,7 +25,10 @@ class SubjectsListPageState extends State<SubjectsListPage> {
   Stream<List<QueryDocumentSnapshot>> _loadUserSubjects() async* {
     var user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      var userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      var userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       List<dynamic> subjectIds = userDoc.data()?['c_subjects'] ?? [];
       yield* FirebaseFirestore.instance
           .collection('subjects')
@@ -47,7 +50,8 @@ class SubjectsListPageState extends State<SubjectsListPage> {
             IconButton(
               icon: const Icon(Icons.home),
               onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const BaseEditorPage()));
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => const BaseEditorPage()));
               },
             ),
             const Text("Subjects"),
@@ -57,7 +61,8 @@ class SubjectsListPageState extends State<SubjectsListPage> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const NewSubject()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const NewSubject()));
             },
           ),
           const SizedBox(width: 50)
@@ -78,8 +83,6 @@ class SubjectsListPageState extends State<SubjectsListPage> {
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
               ),
               itemCount: docs.length,
               itemBuilder: (context, index) {
@@ -88,21 +91,28 @@ class SubjectsListPageState extends State<SubjectsListPage> {
                   margin: const EdgeInsets.all(10),
                   child: InkWell(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => SubjectDetails(subjectId: docs[index].id)));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) =>
+                              SubjectDetails(subjectId: docs[index].id)));
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 30),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(Icons.subject, size: 40, color: Theme.of(context).primaryColor),
-                          Text(data['name'] ?? 'No Name', textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          Icon(Icons.subject,
+                              size: 30, color: Theme.of(context).primaryColor),
+                          Text(data['name'] ?? 'No Name',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
                           IconButton(
-                            onPressed: () {
-                              Clipboard.setData(ClipboardData(text: docs[index].id));
-                            },
-                            icon: const Icon(Icons.copy)),
+                              onPressed: () {
+                                Clipboard.setData(
+                                    ClipboardData(text: docs[index].id));
+                              },
+                              icon: const Icon(Icons.copy)),
                         ],
                       ),
                     ),

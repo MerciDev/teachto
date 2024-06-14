@@ -1,4 +1,3 @@
-
 import 'package:cenec_app/presentation/screens/intro/logo.dart';
 import 'package:cenec_app/resources/themes/app_theme.dart';
 import 'package:cenec_app/services/local_storage/local_storage.dart';
@@ -14,8 +13,7 @@ void main() async {
   );
 
   runApp(
-    const MyApp(), // Your main application widget
-    
+    const MyApp(),
   );
 }
 

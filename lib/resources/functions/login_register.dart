@@ -106,11 +106,6 @@ void register(
         cPswdCtrl,
         () => {
               login(emailCtrl, pswdCtrl, context),
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-                (Route<dynamic> route) => false,
-              )
             });
   }
 }
@@ -121,11 +116,12 @@ void login(TextEditingController emailController,
       emailController,
       passwordController,
       () => {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-                (Route<dynamic> route) => false,
-              )
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            )
           });
 }
 

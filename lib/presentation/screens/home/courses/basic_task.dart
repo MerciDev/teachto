@@ -46,15 +46,20 @@ class TaskDetailPage extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: ElevatedButton.icon(
-                icon: const Icon(Icons.upload_file,color: Colors.black,),
-                label: const Text("Subir Archivo",style: TextStyle(color: Colors.white),),
-                onPressed: () => pickAndUploadFile(),
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  minimumSize: const Size(200, 50),
-                  backgroundColor: Colors.blueAccent)
-              ),
+                  icon: const Icon(
+                    Icons.upload_file,
+                    color: Colors.black,
+                  ),
+                  label: const Text(
+                    "Subir Archivo",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () => pickAndUploadFile(),
+                  style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      minimumSize: const Size(200, 50),
+                      backgroundColor: Colors.blueAccent)),
             ),
           ],
         ),
@@ -111,11 +116,12 @@ class CheckButtonState extends State<CheckButton> {
       for (var doc in tasksSnapshot.docs) {
         model.Task task = model.Task.fromFirestore(doc.data())..uid = doc.id;
         if (widget.task.uid == task.uid) {
-          widget.task.subjectUid = subject.id;}}
+          widget.task.subjectUid = subject.id;
         }
+      }
+    }
 
     String status = await widget.task.getStatusByUser(userId);
-    print(status);
     _isChecked = status == "completed";
     setState(() {});
   }

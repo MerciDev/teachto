@@ -67,17 +67,16 @@ class UserProfilePageState extends State<UserProfilePage> {
   }
 
   Future<String> getUserType() async {
-  var userDoc = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .get();
+    var userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
 
-  if (userDoc.exists && userDoc.data()!.containsKey('type')) {
-    return userDoc.data()!['type'] as String;
+    if (userDoc.exists && userDoc.data()!.containsKey('type')) {
+      return userDoc.data()!['type'] as String;
+    }
+    return 'student';
   }
-  return 'student';
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +87,7 @@ class UserProfilePageState extends State<UserProfilePage> {
     } else {
       return Scaffold(
         appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: Theme.of(context).primaryColor,
             title: Text('Usuario',
                 style: Theme.of(context).textTheme.displayMedium)),
@@ -131,7 +131,8 @@ class UserProfilePageState extends State<UserProfilePage> {
         children: [
           const CircleAvatar(
             radius: 50,
-            backgroundImage: AssetImage('assets/examples/cafe.jpg'),
+            backgroundImage: NetworkImage(
+                'https://www.picserver.org/assets/library/2020-10-31/originals/example1.jpg'),
           ),
           const SizedBox(width: 20),
           FutureBuilder(
@@ -153,58 +154,68 @@ class UserProfilePageState extends State<UserProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(userEmail, style: Theme.of(context).textTheme.displaySmall),
-        Text(FirebaseAuth.instance.currentUser!.uid,
-            style: Theme.of(context).textTheme.bodySmall),
-        IconButton(
-            onPressed: () {
-              Clipboard.setData(
-                  ClipboardData(text: FirebaseAuth.instance.currentUser!.uid));
-            },
-            icon: const Icon(Icons.copy))
+        Text(userEmail,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(fontWeight: FontWeight.bold)),
+        Row(
+          children: [
+            Text("Copy ID", style: Theme.of(context).textTheme.bodyMedium),
+            IconButton(
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(
+                      text: FirebaseAuth.instance.currentUser!.uid));
+                },
+                icon: const Icon(
+                  Icons.copy,
+                  size: 20,
+                )),
+          ],
+        )
       ],
     );
   }
 
   Widget _buttonBar(BuildContext context) {
-  return FutureBuilder<String>(
-    future: getUserType(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-        // Muestra el botón solo si el usuario es un profesor
-        if (snapshot.data == 'teacher' || snapshot.data == 'admin') {
-          return const Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                NavigationButton(
-                    Icons.notifications, "Notificaciones", NotificationsPage()),
-                NavigationButton(Icons.edit, "Editar", BaseEditorPage()),
-                NavigationButton(Icons.settings, "Ajustes", SettingsPage()),
-              ],
-            ),
-          );
+    return FutureBuilder<String>(
+      future: getUserType(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          // Muestra el botón solo si el usuario es un profesor
+          if (snapshot.data == 'teacher' || snapshot.data == 'admin') {
+            return const Padding(
+              padding: EdgeInsets.only(bottom: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  NavigationButton(Icons.notifications, "Notificaciones",
+                      NotificationsPage()),
+                  NavigationButton(Icons.edit, "Editar", BaseEditorPage()),
+                  NavigationButton(Icons.settings, "Ajustes", SettingsPage()),
+                ],
+              ),
+            );
+          } else {
+            return const Padding(
+              padding: EdgeInsets.only(bottom: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  NavigationButton(Icons.notifications, "Notificaciones",
+                      NotificationsPage()),
+                  NavigationButton(Icons.settings, "Ajustes", SettingsPage()),
+                ],
+              ),
+            );
+          }
         } else {
-          return const Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                NavigationButton(
-                    Icons.notifications, "Notificaciones", NotificationsPage()),
-                NavigationButton(Icons.settings, "Ajustes", SettingsPage()),
-              ],
-            ),
-          );
+          return const CircularProgressIndicator();
         }
-      } else {
-        return const CircularProgressIndicator();
-      }
-    },
-  );
-}
-
+      },
+    );
+  }
 
   Widget _buildAdditionalInfo() {
     return Container(
@@ -292,86 +303,111 @@ class UserProfilePageState extends State<UserProfilePage> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text(
-                      "Tareas para ${DateFormat('dd/MM/yyyy').format(selectedDay)}"),
+                  contentPadding: EdgeInsets.zero,
+                  title: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                      child: Text(
+                        "Tareas para ${DateFormat('dd/MM/yyyy').format(selectedDay)}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                   content: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: Column(
-                      children: [
-                        Text(
-                          "Completadas",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(color: Colors.green),
-                        ),
-                        FutureBuilder<Task>(
-                          future: getTaskByDate(selectedDay),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.hasData &&
-                                completedTasks
-                                    .contains(snapshot.data?.dueDate)) {
-                              Task task = snapshot.data!;
-                              return Text(task.name);
-                            } else {
-                              return const Text("No hay tareas.");
-                            }
-                          },
-                        ),
-                        Text(
-                          "Pendientes",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(color: Colors.amber),
-                        ),
-                        FutureBuilder<Task>(
-                          future: getTaskByDate(selectedDay),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.hasData &&
-                                pendingTasks.contains(snapshot.data?.dueDate)) {
-                              Task task = snapshot.data!;
-                              return Text(task.name);
-                            } else {
-                              return const Text("No hay tareas.");
-                            }
-                          },
-                        ),
-                        Text(
-                          "Sin Entregar",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(color: Colors.red),
-                        ),
-                        FutureBuilder<Task>(
-                          future: getTaskByDate(selectedDay),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.hasData &&
-                                completedIds.contains(snapshot.data?.uid)) {
-                              Task task = snapshot.data!;
-                              return Text(task.name);
-                            } else {
-                              return const Text("No hay tareas.");
-                            }
-                          },
-                        ),
-                      ],
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          Text(
+                            "Completadas",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(color: Colors.green),
+                          ),
+                          FutureBuilder<Task>(
+                            future: getTaskByDate(selectedDay),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (snapshot.hasData &&
+                                  completedTasks
+                                      .contains(snapshot.data?.dueDate)) {
+                                Task task = snapshot.data!;
+                                return Text(task.name);
+                              } else {
+                                return const Text("No hay tareas.");
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "Pendientes",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(color: Colors.amber),
+                          ),
+                          FutureBuilder<Task>(
+                            future: getTaskByDate(selectedDay),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (snapshot.hasData &&
+                                  pendingTasks
+                                      .contains(snapshot.data?.dueDate)) {
+                                Task task = snapshot.data!;
+                                return Text(task.name);
+                              } else {
+                                return const Text("No hay tareas.");
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "Sin Entregar",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(color: Colors.red),
+                          ),
+                          FutureBuilder<Task>(
+                            future: getTaskByDate(selectedDay),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (snapshot.hasData &&
+                                  completedIds.contains(snapshot.data?.uid)) {
+                                Task task = snapshot.data!;
+                                return Text(task.name);
+                              } else {
+                                return const Text("No hay tareas.");
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   actions: <Widget>[
@@ -538,6 +574,7 @@ Future<Task> getTaskByDate(DateTime date) async {
 
       for (var taskDoc in taskSnapshot.docs) {
         Task task = Task.fromSnapshot(taskDoc);
+        task.subjectUid = subjectDoc.id;
         if (DateTime(
                 task.dueDate!.year, task.dueDate!.month, task.dueDate!.day) ==
             DateTime(date.year, date.month, date.day)) {
@@ -551,6 +588,19 @@ Future<Task> getTaskByDate(DateTime date) async {
     }
   }
   return Task(uid: "", name: "No hay tareas.");
+}
+
+Future<String> getSubjectName(String subjectUid) async {
+  String name = "";
+  QuerySnapshot subjectSnapshot =
+      await FirebaseFirestore.instance.collection('subjects').get();
+  for (var subjectDoc in subjectSnapshot.docs) {
+    Subject subject = Subject.fromFirestore(subjectDoc);
+    if (subject.uid == subjectUid) {
+      name = subject.name;
+    }
+  }
+  return name;
 }
 
 Future<List<String>> getList(String restriction) async {

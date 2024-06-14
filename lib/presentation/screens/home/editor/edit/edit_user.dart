@@ -1,4 +1,3 @@
-
 import 'package:cenec_app/presentation/screens/home/editor/base.dart';
 import 'package:cenec_app/resources/functions/navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -60,7 +59,8 @@ class UserDetailsState extends State<UserDetails> {
 
         completedTasks = List<String>.from(userData!['completedTasks'] ?? []);
         pendingTasks = List<String>.from(userData!['pendingTasks'] ?? []);
-        unsubmittedTasks = List<String>.from(userData!['unsubmittedTasks'] ?? []);
+        unsubmittedTasks =
+            List<String>.from(userData!['unsubmittedTasks'] ?? []);
       } else {
         if (kDebugMode) {
           print('No such document!');
@@ -74,12 +74,12 @@ class UserDetailsState extends State<UserDetails> {
   }
 
   Future<String?> findSubjectIdByTaskId(String taskId) async {
-    QuerySnapshot subjectsSnapshot = await FirebaseFirestore.instance
-        .collection('subjects')
-        .get();
+    QuerySnapshot subjectsSnapshot =
+        await FirebaseFirestore.instance.collection('subjects').get();
 
     for (QueryDocumentSnapshot subjectDoc in subjectsSnapshot.docs) {
-      Map<String, dynamic> subjectData = subjectDoc.data() as Map<String, dynamic>;
+      Map<String, dynamic> subjectData =
+          subjectDoc.data() as Map<String, dynamic>;
       List<String> taskIds = List<String>.from(subjectData['tasks'] ?? []);
       if (taskIds.contains(taskId)) {
         return subjectDoc.id;
@@ -106,7 +106,8 @@ class UserDetailsState extends State<UserDetails> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: _isEditable ? const Icon(Icons.check) : const Icon(Icons.edit),
+            icon:
+                _isEditable ? const Icon(Icons.check) : const Icon(Icons.edit),
             onPressed: () {
               setState(() {
                 if (_isEditable) {
@@ -158,7 +159,7 @@ class UserDetailsState extends State<UserDetails> {
                       labelStyle: const TextStyle(color: Colors.black),
                     ),
                     style: const TextStyle(color: Colors.black),
-                    ),
+                  ),
                   const SizedBox(height: 20),
                   TextField(
                     enabled: false,
@@ -193,7 +194,6 @@ class UserDetailsState extends State<UserDetails> {
       setState(() {
         _isEditable = false;
       });
-
     } catch (e) {
       if (kDebugMode) {
         print('Error updating user: $e');
@@ -210,8 +210,8 @@ class UserDetailsState extends State<UserDetails> {
           FirebaseFirestore.instance.collection('users').doc(widget.userId);
 
       await userRef.delete();
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
-
     } catch (e) {
       if (kDebugMode) {
         print('Error deleting user: $e');

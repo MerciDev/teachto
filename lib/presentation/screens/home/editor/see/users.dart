@@ -1,4 +1,3 @@
-
 import 'package:cenec_app/presentation/screens/home/editor/base.dart';
 import 'package:cenec_app/presentation/screens/home/editor/edit/edit_user.dart';
 import 'package:cenec_app/resources/functions/navigation.dart';
@@ -44,8 +43,6 @@ class UsersListPage extends StatelessWidget {
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
               ),
               itemCount: docs.length,
               itemBuilder: (context, index) {
@@ -67,7 +64,7 @@ class UsersListPage extends StatelessWidget {
                         children: <Widget>[
                           const Icon(
                             Icons.person,
-                            size: 40,
+                            size: 30,
                             color: Colors.blue,
                           ),
                           const SizedBox(height: 20),

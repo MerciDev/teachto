@@ -9,6 +9,7 @@ class PromotionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Promociones de Cursos',
             style: Theme.of(context).textTheme.displayMedium),
         backgroundColor: Theme.of(context).primaryColor,

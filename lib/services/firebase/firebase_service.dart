@@ -58,6 +58,7 @@ Future<void> registerFB(
       email: user.email,
       password: user.password,
     );
+    FirebaseAuth.instance.currentUser?.updateDisplayName(user.name);
 
     final userUid = userCredential.user!.uid;
 
@@ -131,7 +132,6 @@ Future<void> loginFBGl(Function? onSuccess) async {
     }
   } on PlatformException catch (e) {
     if (kDebugMode) {
-      
       print(e.toString());
     }
     errorToast('Error al inciar sesión');

@@ -26,10 +26,10 @@ class CoursesPageState extends State<CoursesPage> {
   void initState() {
     super.initState();
     if (LocalStorage.prefs.getBool('unsubmittedNotify') == true) {
-    _checkForUnsubmittedTasks();
+      _checkForUnsubmittedTasks();
     }
     if (LocalStorage.prefs.getBool('pendingNotify') == true) {
-    _checkForPendingTasks();
+      _checkForPendingTasks();
     }
   }
 
@@ -68,9 +68,11 @@ class CoursesPageState extends State<CoursesPage> {
           Colors.amber,
           'Tienes tareas pendientes',
           () {
-            setState(() {
-              _selectedFilter = 'pendings';
-            });
+            if (mounted) {
+              setState(() {
+                _selectedFilter = 'pendings';
+              });
+            }
           },
         );
       });
@@ -97,7 +99,8 @@ class CoursesPageState extends State<CoursesPage> {
             .collection('userData')
             .doc(FirebaseAuth.instance.currentUser?.uid);
         var userTaskDoc = await userTaskDocRef.get();
-        if (userTaskDoc.exists && userTaskDoc.data()?['status'] == 'unsubmitted') {
+        if (userTaskDoc.exists &&
+            userTaskDoc.data()?['status'] == 'unsubmitted') {
           hasPendingTasks = true;
           break;
         }
@@ -139,6 +142,7 @@ class CoursesPageState extends State<CoursesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text('Mis Cursos',
             style: Theme.of(context).textTheme.displayMedium),
@@ -252,7 +256,7 @@ class CoursesPageState extends State<CoursesPage> {
                 return ListView(
                   children: subjects
                       .map((subject) => SubjectWidget(
-                        key: ValueKey(subject.uid),
+                            key: ValueKey(subject.uid),
                             subject: subject,
                             filter: _selectedFilter,
                             sortOrder: _selectedOrder,
@@ -269,17 +273,12 @@ class CoursesPageState extends State<CoursesPage> {
         child: FloatingActionButton(
           onPressed: () {
             setState(() {});
-            // CustomNotification.showNotification(
-            //   context,
-            //   Icons.info,
-            //   'Tienes tareas pendientes',
-            //   () {
-            //     setState(() {
-            //       _selectedFilter =
-            //           'pendings';
-            //     });
-            //   },
-            // );
+            if (LocalStorage.prefs.getBool('unsubmittedNotify') == true) {
+              _checkForUnsubmittedTasks();
+            }
+            if (LocalStorage.prefs.getBool('pendingNotify') == true) {
+              _checkForPendingTasks();
+            }
           },
           child: const Icon(Icons.refresh),
         ),
